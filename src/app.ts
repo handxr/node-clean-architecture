@@ -6,6 +6,7 @@ import { corsOptions } from "./config/middleware";
 import { errorHandler } from "./middlewares/errorHandler";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger";
+import dotenv from "dotenv";
 
 class App {
   public app: Application;
@@ -21,6 +22,7 @@ class App {
     this.app.use(json());
     this.app.use(cors(corsOptions));
     this.app.use(urlencoded({ extended: true }));
+    dotenv.config();
   }
 
   private middleware(): void {

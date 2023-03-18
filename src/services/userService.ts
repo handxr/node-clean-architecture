@@ -4,13 +4,11 @@ import bcrypt from "bcrypt";
 import { hashPassword, comparePasswords } from "../utils/encryption";
 import jwt from "jsonwebtoken";
 import jwtConfig from "../config/auth";
+import { CreateUserDTO } from "domain/dto/CreateUserDTO";
+import { UpdateUserDTO } from "domain/dto/UpdateUserDTO";
 
 class UserService {
-  async createUser(data: {
-    email: string;
-    name: string;
-    password: string;
-  }): Promise<User> {
+  async createUser(data: CreateUserDTO): Promise<User> {
     const userExists = await PrismaUserRepository.getUserByEmail(data.email);
 
     if (userExists) {
@@ -33,10 +31,7 @@ class UserService {
     return PrismaUserRepository.getUserById(id);
   }
 
-  async updateUser(
-    id: number,
-    data: { email?: string; name?: string; password?: string }
-  ): Promise<User> {
+  async updateUser(id: number, data: UpdateUserDTO): Promise<User> {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }

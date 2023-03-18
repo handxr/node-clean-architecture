@@ -44,6 +44,18 @@ describe("UserController", () => {
         result: mockUser,
       });
     });
+    it("should return a 400 status and error message if a required field is missing", async () => {
+      const incompleteUserData = {
+        email: "test@example.com",
+      };
+
+      const res = await request.post("/test").send(incompleteUserData);
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({
+        message: expect.stringContaining("Missing Fields:"),
+      });
+    });
   });
   describe("getAllUsers", () => {
     it("should return all users with status 200", async () => {

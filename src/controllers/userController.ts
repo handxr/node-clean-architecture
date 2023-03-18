@@ -1,17 +1,18 @@
 import { NextFunction, Request, Response } from "express";
+import UserSchema from "../schemas/user.schema";
 import UserService from "../services/userService";
 
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const requiredFields = ["email", "password"];
-      const missingFields = requiredFields.filter(
-        (field) => !Object.keys(req.body).includes(field)
-      );
+      const validationResult = UserSchema.safeParse(req.body);
 
-      if (missingFields.length) {
+      if (!validationResult.success) {
+        const errorMessages = validationResult.error.issues.map(
+          (issue) => `${issue.path[0]}: ${issue.message}`
+        );
         return res.status(400).json({
-          message: `Missing fields: ${missingFields.join(", ")}`,
+          message: `Missing Fields: ${errorMessages.join(", ")}`,
         });
       }
 

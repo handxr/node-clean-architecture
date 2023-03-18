@@ -1,4 +1,5 @@
 import { Router } from "express";
+import authMiddleware from "../middlewares/authMiddleware";
 import UserController from "../controllers/userController";
 
 const router = Router();
@@ -68,7 +69,7 @@ router.post("/register", UserController.createUser);
  *           format: date-time
  *           description: Fecha de creación del usuario
  */
-router.get("/users", UserController.getAllUsers);
+router.get("/users", authMiddleware, UserController.getAllUsers);
 router.get("/users/:id", UserController.getUserById);
 router.put("/users/:id", UserController.updateUser);
 router.delete("/users/:id", UserController.deleteUser);

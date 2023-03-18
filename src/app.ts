@@ -7,7 +7,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger";
 import dotenv from "dotenv";
-import authMiddleware from "middlewares/authMiddleware";
+import authMiddleware from "./middlewares/authMiddleware";
 
 class App {
   public app: Application;

@@ -7,6 +7,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger";
 import dotenv from "dotenv";
+import authMiddleware from "middlewares/authMiddleware";
 
 class App {
   public app: Application;
@@ -31,7 +32,12 @@ class App {
 
   private routes(): void {
     this.app.use("/api", userRoutes);
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.app.use(
+      "/api-docs",
+      authMiddleware,
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpec)
+    );
   }
 }
 
